@@ -26,7 +26,7 @@
       </navigator>
     </view>
     <view class="b">
-      <view class="item item-1" wx:for="{{brand}}" wx:key="item.id">
+      <view class="item item-1" wx:for="{{brands}}" wx:key="{{item.id}}">
         <navigator url="/pages/brandDetail/brandDetail?id={{item.id}}">
           <view class="wrap">
             <image class="img" src="{{item.new_pic_url}}" mode="aspectFill"></image>
@@ -51,7 +51,7 @@
     <view class="b">
       <view class="item" wx:for="{{newGoods}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
         <navigator url="../goods/goods?id={{item.id}}">
-          <image class="img" src="{{item.list_pic_url}}" background-size="cover"></image>
+          <image class="img" src="{{item.image}}" background-size="cover"></image>
           <text class="name">{{item.name}}</text>
           <text class="price">￥{{item.retail_price}}</text>
         </navigator>
@@ -111,11 +111,11 @@
       </view>
     </view>
     <view class="b">
-      <block wx:for="{{item.goodsList}}" wx:for-index="iindex" wx:for-item="iitem" wx:key="{{iitem.id}}">
-        <navigator url="../goods/goods?id={{iitem.id}}" class="item">
-          <image class="img" src="{{iitem.list_pic_url}}" background-size="cover"></image>
-          <view class="name">{{iitem.name}}</view>
-          <view class="price">￥{{iitem.retail_price}}</view>
+      <block wx:for="{{item.goodsList}}" wx:for-index="iindex" wx:for-item="iitem" wx:key="{{item.id}}">
+        <navigator url="../goods/goods?id={{item.id}}" class="item">
+          <image class="img" src="{{item.list_pic_url}}" background-size="cover"></image>
+          <view class="name">{{item.name}}</view>
+          <view class="price">￥{{item.retail_price}}</view>
         </navigator>
       </block>
     </view>

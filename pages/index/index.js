@@ -3,6 +3,8 @@
 // const api = require('../../config/api.js');
 // const user = require('../../services/user.js');
 
+
+
 //获取应用实例
 const app = getApp();
 Page({
@@ -35,7 +37,31 @@ Page({
       this.setData({
         banner:res.result.data
       })
-    })
+    });
+    wx.cloud.callFunction({
+      name:"getChannels"
+    }).
+    then(res=>{
+      this.setData({
+        channel:res.result.data
+      })
+    });
+    wx.cloud.callFunction({
+      name:"getBrand"
+    }).
+    then(res=>{
+      this.setData({
+        brands:res.result.data
+      });
+    });
+    wx.cloud.callFunction({
+      name:"getNewgood"
+    }).
+    then(res=>{
+      this.setData({
+        newGoods:res.result.data
+      });
+    });
     // wx.cloud.callFunction({
     //   name:""
     // })

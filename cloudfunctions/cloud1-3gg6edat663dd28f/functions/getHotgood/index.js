@@ -2,8 +2,9 @@
 const cloud = require('wx-server-sdk')
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV }) // 使用当前云环境
+
 const db = cloud.database();
 // 云函数入口函数
 exports.main = async (event, context) => {
-  return await db.collection("banner").get();
+  return await db.collection("goods").where({hot_good:true}).get();
 }
