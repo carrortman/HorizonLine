@@ -5,8 +5,8 @@ var api = require('../../config/api.js');
 
 Page({
   data: {
-    id: 0,
-    goods: {},
+    id: "0",
+    good: {},
     gallery: [],
     attribute: [],
     issueList: [],
@@ -25,36 +25,59 @@ Page({
     collectBackImage: "/static/images/icon_collect.png"
   },
   getGoodsInfo: function () {
+    console.log(this.data.id);
     let that = this;
-    util.request(api.GoodsDetail, { id: that.data.id }).then(function (res) {
-      if (res.errno === 0) {
-        that.setData({
-          goods: res.data.info,
-          gallery: res.data.gallery,
-          attribute: res.data.attribute,
-          issueList: res.data.issue,
-          comment: res.data.comment,
-          brand: res.data.brand,
-          specificationList: res.data.specificationList,
-          productList: res.data.productList,
-          userHasCollect: res.data.userHasCollect
-        });
-
-        if (res.data.userHasCollect == 1) {
-          that.setData({
-            'collectBackImage': that.data.hasCollectImage
-          });
-        } else {
-          that.setData({
-            'collectBackImage': that.data.noCollectImage
-          });
-        }
-
-        WxParse.wxParse('goodsDetail', 'html', res.data.info.goods_desc, that);
-
-        that.getGoodsRelated();
+    wx.cloud.callFunction({
+      name:"getGood",
+      data:{
+        _id: this.data.id
       }
-    });
+    }).then(res=>{
+      console.log(res);
+      console.log(res.result.data[0]);
+      console.log(res.result.data[0].comments);
+      this.setData({
+        gallery:res.result.data[0].gallery,
+        good:res.result.data[0],
+        brand:res.result.data[0].brand,
+        comments:res.result.data[0].comments,
+        attribute:res.result.data[0].attribute,
+        issueList:res.result.data[0].issue_List
+      });
+      console.log(this.data.comments);
+      console.log(this.data.comments.length);
+    })
+
+    
+    // util.request(api.GoodsDetail, { id: that.data.id }).then(function (res) {
+    //   if (res.errno === 0) {
+    //     that.setData({
+    //       goods: res.data.info,
+    //       gallery: res.data.gallery,
+    //       attribute: res.data.attribute,
+    //       issueList: res.data.issue,
+    //       comment: res.data.comment,
+    //       brand: res.data.brand,
+    //       specificationList: res.data.specificationList,
+    //       productList: res.data.productList,
+    //       userHasCollect: res.data.userHasCollect
+    //     });
+
+    //     if (res.data.userHasCollect == 1) {
+    //       that.setData({
+    //         'collectBackImage': that.data.hasCollectImage
+    //       });
+    //     } else {
+    //       that.setData({
+    //         'collectBackImage': that.data.noCollectImage
+    //       });
+    //     }
+
+    //     WxParse.wxParse('goodsDetail', 'html', res.data.info.goods_desc, that);
+
+    //     that.getGoodsRelated();
+    //   }
+    // });
 
   },
   getGoodsRelated: function () {
@@ -179,19 +202,21 @@ Page({
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
     this.setData({
-      id: parseInt(options.id)
-      // id: 1181000
+      id: options.id
     });
     var that = this;
-    this.getGoodsInfo();
-    util.request(api.CartGoodsCount).then(function (res) {
-      if (res.errno === 0) {
-        that.setData({
-          cartGoodsCount: res.data.cartTotal.goodsCount
-        });
+ console.log(options.id)
 
-      }
-    });
+
+    this.getGoodsInfo();
+    // util.request(api.CartGoodsCount).then(function (res) {
+    //   if (res.errno === 0) {
+    //     that.setData({
+    //       cartGoodsCount: res.data.cartTotal.goodsCount
+    //     });
+
+    //   }
+    // });
   },
   onReady: function () {
     // 页面渲染完成
@@ -223,6 +248,9 @@ Page({
   },
   addCannelCollect: function () {
     let that = this;
+
+
+    
     //添加或是取消收藏
     util.request(api.CollectAddOrDelete, { typeId: 0, valueId: this.data.id }, "POST")
       .then(function (res) {

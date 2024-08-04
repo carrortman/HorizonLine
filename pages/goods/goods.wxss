@@ -337,6 +337,7 @@
 .common-problem {
   width: 750rpx;
   height: auto;
+  /* height: 45rpx; */
   overflow: hidden;
 }
 

@@ -49,8 +49,8 @@
       </view>
     </view>
     <view class="b">
-      <view class="item" wx:for="{{newGoods}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
-        <navigator url="../goods/goods?id={{item.id}}">
+      <view class="item" wx:for="{{newGoods}}" wx:for-index="index" wx:for-item="item" wx:key="{{item._id}}">
+        <navigator url="../goods/goods?id={{item._id}}">
           <image class="img" src="{{item.image}}" background-size="cover"></image>
           <text class="name">{{item.name}}</text>
           <text class="price">￥{{item.retail_price}}</text>
